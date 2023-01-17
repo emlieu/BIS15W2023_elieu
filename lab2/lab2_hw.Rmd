@@ -7,7 +7,6 @@ output:
     theme: spacelab
     keep_md: yes
 ---
-
 ## Instructions
 Answer the following questions and complete the exercises in RMarkdown. Please embed all of your code and push your final work to your repository. Your final lab report should be organized, clean, and run free from errors. Remember, you must remove the `#` for the included code chunks to run. Be sure to add your name to the author header above.  
 
@@ -77,7 +76,6 @@ mean (Jill)
 Steve <- means_spring_matrix [ ,2]
 mean (Steve)
 ```
-
 
 ## Push your final code to GitHub!
 Please be sure that you check the `keep md` file in the knit preferences.  

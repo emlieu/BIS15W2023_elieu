@@ -9,7 +9,6 @@ output:
   pdf_document:
     toc: yes
 ---
-
 ## Setup
 Before each lab, please make sure that you complete the following:  
 1. Go to the class repository [datascibiol](https://github.com/jmledford3115/datascibiol), click the `Clone or download` button then `Download zip` to the desktop.  
@@ -38,6 +37,12 @@ x <- 42
 To print the object to the screen, just type x.  
 ```{r}
 x
+```
+```{r}
+y <- 10
+```
+```{r}
+z <- x+y
 ```
 
 Once an object has been created, you can do things with them.  
@@ -68,12 +73,24 @@ venom_GT <- 270
 
 2. Use arithmetic to calculate the mean top speed for the cars.
 ```{r}
+chiron <- 261
+```
+```{r}
+veyron <- 268
+```
 
+2. Use arithmetic to calculate the mean top speed for the cars.
+```{r}
+(270+261+268)/3
 ```
 
 3. Use the function `mean()` to calculate the mean top speed for the cars.
 ```{r}
-
+mean(venom_GT, chiron, veyron)
+```
+```{r}
+cars <- c(venom_GT, chiron, veyron)
+mean (cars)
 ```
 
 ## Types of Data
@@ -107,16 +124,13 @@ is.integer(my_integer) #is my_numeric an integer?
 
 ## Missing Data
 R has a special way to designate missing data, the NA. NA values in R have specific properties which are very useful if your data contains any missing values. Later this quarter we will have a session focused on dealing with NAs.  
-
 NA values are used to designate missing data. `is.na` or `anyNA` are useful functions when dealing with NAs in data. 
 ```{r}
 my_missing <- NA
 ```
-
 ```{r}
 is.na(my_missing)
 ```
-
 ```{r}
 anyNA(my_missing)
 ```
@@ -129,10 +143,11 @@ new_vector <- c(7, 6.2, 5, 9, NA, 4, 9.8, 7, 3, 2)
 
 2. As we did in homework 1, calculate the mean of `new_vector`.
 ```{r}
-
+mean(new_vector)
 ```
 
-3. How do you interpret this result? What does this mean about NAs?  
+3. How do you interpret this result? What does this mean about NAs?
+this means there is missing data in my code chunk and NA is used as a placeholder. This means we can remove NAs from calculations without actually having to find them. 
 
 4. Recalculate the mean using the following code chunk. Why is the useful?  
 ```{r}
@@ -140,5 +155,6 @@ mean(new_vector, na.rm=T) #na.rm removes the NA values in the vector
 ```
 
 ## That's it! Take a break and I will see you on Zoom!  
+## That's it! Let's take a break and then move on to part 2!
 
 -->[Home](https://jmledford3115.github.io/datascibiol/)  
