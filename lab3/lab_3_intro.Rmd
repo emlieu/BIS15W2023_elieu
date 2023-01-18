@@ -20,14 +20,63 @@ library("jpeg")
 ## Review from last time
 ### *With a partner, discuss the following questions*
 1. What are examples of different classes of objects in R?
+Numerics, intergers, characters, logical (T/F), and complex.
+
 2. What is a vector? What is the command to make a vector in R?
+A vector is a data organization tool that can be assigned a collection of values of the same class. 
+
 3. What is a data matrix and how does a data matrix relate to vectors?
+A data matrix is an organizational structure that organizes data. Vectors are used to construct a data matrix because of how they can be assigned sets of data.
+
 4. Do you have any questions from homework 2?
+No. 
 
 ## Warm-up
 1. Build a vector that includes the following height measurements for five plants:
 plant 1 30.7, plant 2 37.6, plant 3 28.4, plant 4 NA, plant 5 33.2
+
 2. Build another vector that includes the following mass measurements:
 plant 1 4, plant 2 5.2, plant 3 3.7, plant 4 NA, plant 5 4.6
+
 3. Assemble these vectors into a labeled data matrix with two columns
+```{r}
+plant_1 <- 30.7
+plant_2 <- 37.6
+plant_3 <- 28.4
+plant_4 <- NA
+plant_5 <- 33.2
+plant_heights <- c(plant_1, plant_2, plant_3, plant_4, plant_5)
+plant_heights
+```
+
+2. Build another vector that includes the following mass measurements:
+plant 1 4, plant 2 5.2, plant 3 3.7, plant 4 NA, plant 5 4.6
+```{r}
+mass_1 <- 4
+mass_2 <-5.2
+mass_3 <- 3.7
+mass_4 <- NA
+mass_5 <- 4.6
+plant_mass <- c(mass_1, mass_2, mass_3, mass_4, mass_5)
+```
+
+3. Assemble these vectors into a labeled data matrix with two columns
+```{r}
+samples <- c("plant_1", "plant_2", "plant_3", "plant_4", "plant_5")
+measured <- c("height", "mass")
+```
+```{r}
+plant_experiment <- c(plant_heights, plant_mass)
+plant_experiment
+```
+```{r}
+plant_matrix <- matrix(plant_experiment, nrow = 5, byrow = F)
+plant_matrix
+```
+```{r}
+colnames(plant_matrix) <- measured
+rownames(plant_matrix) <- samples
+plant_matrix
+```
+
 4. Calculate the mean for height and mass and add them to the data matrix

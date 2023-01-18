@@ -24,6 +24,10 @@ At this point, you should have familiarity in RStudio, GitHub, and basic operati
 library("tidyverse")
 ```
 
+## FOR AT HOME:
+#install.packages("tidyverse")
+remove # to use!
+
 ## Data Frames
 For the remainder of the course, we will work exclusively with data frames. Recall that data frames store multiple classes of data. Last time, you were shown how to build data frames using the `data.frame()` command. However, scientists often make their data available as supplementary material associated with a publication. This is excellent scientific practice as it insures repeatability by showing exactly how analyses were performed. As data scientists, we capitalize on this by importing data directly into R.  
 
@@ -39,7 +43,6 @@ getwd()
 
 ## Load the data
 Here we open a .csv file. Since we are using the tidyverse, we open the file using `read_csv()`. `readr` is included in the tidyverse set of packages. We specify the package and function with the `::` symbol. This becomes important if you have multiple packages loaded that contain functions with the same name.  
-
 In the previous part of the lab, you exported a `.csv` of hot springs data. Let's try to reload that `.csv`.  
 ```{r}
 hot_springs <- readr::read_csv("hsprings_data.csv")
@@ -68,13 +71,14 @@ levels(hot_springs$scientist)
 1. In your lab 3 folder there is another folder titled `data`. Inside the `data` folder there is a `.csv` titled `Gaeta_etal_CLC_data.csv`. Open this data and store them as an object called `fish`.  
 
 The data are from: Gaeta J., G. Sass, S. Carpenter. 2012. Biocomplexity at North Temperate Lakes LTER: Coordinated Field Studies: Large Mouth Bass Growth 2006. Environmental Data Initiative.  [link](https://portal.edirepository.org/nis/mapbrowse?scope=knb-lter-ntl&identifier=267)  
+SPECFIFY THE PATH (lab3 folder -> data folder)
 ```{r}
-
+fish <- readr::read_csv("data/Gaeta_etal_CLC_data.csv")
 ```
 
 2. What is the structure of these data?
 ```{r}
-
+str(fish)
 ```
 
 Notice that when the data are imported, you are presented with a message that tells you how R interpreted the column classes. This is also where error messages will appear if there are problems.  
@@ -122,14 +126,21 @@ We can summarize our data frame with the`summary()` function.
 #tail(fish, n = 10)
 ```
 
+`tail()` print the last n rows of the data frame.
+```{r}
+tail(fish, n = 10)
+```
+
 `table()` is useful when you have a limited number of categorical variables. It produces fast counts of the number of observations in a variable. We will come back to this later... 
 ```{r}
 #table(fish$lakeid)
+table(fish$lakeid)
 ```
 
 We can also click on the `fish` data frame in the Environment tab or type View(fish).
 ```{r}
 #View(fish)
+View(fish)
 ```
 
 ## Filter
@@ -142,31 +153,38 @@ Filter is a way of pulling out observations that meet specific criteria in a var
 ## Practice
 1. Load the data `mammal_lifehistories_v2.csv` and place it into a new object called `mammals`.
 ```{r}
-
+mammals <- readr::read_csv("data/mammal_lifehistories_v2.csv")
 ```
 
 2. Provide the dimensions of the data frame.
 ```{r}
-
+dim(mammals)
 ```
 
 3. Check the column names in the data frame. 
 ```{r}
-
+colnames(mammals)
 ```
 
 4. Use `str()` to show the structure of the data frame and its individual columns; compare this to `glimpse()`. 
 ```{r}
-
+str(mammals)
 ```
 
 ```{r}
-
+glimpse(mammals)
 ```
 
 5. . Try the `table()` command to produce counts of mammal order, family, and genus.  
 ```{r}
 
+table(mammals$order)
+```
+```{r}
+table(mammals$family)
+```
+```{r}
+table(mammals$Genus)
 ```
 
 ## Wrap-up
