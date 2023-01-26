@@ -1,0 +1,76 @@
+---
+title: "Lab 5 Intro"
+date: "`r Sys.Date()`"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library("jpeg")
+```
+
+## Setup
+1. Login to the lab computer (please don't use your personal computer).  
+2. Navigate to github.com and login.   
+2. Copy your repository to the desktop.   
+5. Copy the class repository to the desktop (https://github.com/jmledford3115/datascibiol).  
+6. Copy the files for today's lab from the class repository and paste them into **your** repository.  
+7. Open today's lab in RStudio.  
+
+## Review from last time
+### *With a partner, discuss the following questions*
+1. What are the characteristics of `tidy` data?  
+'Tidy' data has consistent naming, is organized, and user-friendly. It is also categorized based on classes of data. Variables have their own column and observations have their own row, with each cell having their own unique value. 
+
+2. What is the difference between `select` and `filter`?  
+'Select' allows you to pulls specific columns from a dataframe to rearrange or rename them (operates between columns). 'Filter' allows us to pull out data that meets certain criteria or specifications (operates between rows).
+
+3. When is your first midterm? 
+NEXT TUESDAY! JAN 31
+
+## Warm-up
+```{r}
+library(tidyverse)
+```
+
+1. Load the bison data.
+```{r}
+bison <- readr::read_csv("data/bison.csv")
+```
+
+2. What are the dimesions and structure of the data?
+```{r}
+dim(bison)
+```
+```{r}
+glimpse(bison)
+```
+
+3. We are only interested in code, sex, weight, year of birth. Restrict the data to these variables and store the dataframe as a new object.
+```{r}
+colnames(bison)
+```
+```{r}
+bison_data <- select(bison, "animal_code", "animal_sex", "animal_weight", "animal_yob")
+```
+
+4. Pull out the animals born between 1980-1990.
+```{r}
+bison_yob <- filter(bison_data, animal_yob >= 1980 & animal_yob <= 1990)
+```
+
+5. How many male and female bison are represented between 1980-1990?
+```{r}
+table(bison_yob$animal_sex)
+```
+
+6. Between 1980-1990, were males or females larger on average?
+```{r}
+boybison <- filter(bison_yob, animal_sex == "M")
+girlbison <- filter(bison_yob, animal_sex == "F")
+```
+```{r}
+mean(boybison$animal_weight)
+mean(girlbison$animal_weight)
+```
+Males are larger on average. 
