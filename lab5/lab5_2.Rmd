@@ -130,7 +130,6 @@ bad_guys %>%
 9. OK, so are there more good guys or bad guys that are bald (personal interest)?
 ```{r}
   tabyl(good_guys, hair_color)
-  
 ```
 ```{r}
 tabyl(bad_guys, hair_color)
@@ -140,8 +139,9 @@ good guys have more baldies.
 10. Let's explore who the really "big" superheros are. In the `superhero_info` data, which have a height over 200 or weight greater than or equal to 450?
 ```{r}
 superhero_info %>%
-  filter(height > 200 | weight >= 450)
+  filter(height > 200 | weight >= 450)        
 ```
+
 
 11. Just to be clear on the `|` operator,  have a look at the superheros over 300 in height...
 ```{r}
