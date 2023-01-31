@@ -487,18 +487,12 @@ data.</p>
 ## $ upper_95_percent_ci         &lt;dbl&gt; 1.055, 1.009, 1.104, 1.041, 1.036, 1.243, …</code></pre>
 <p>Problem 3. (2 points) How many distinct orders of birds are
 represented in the data?</p>
-<pre class="r"><code>table(ecosphere$order)</code></pre>
-<pre><code>## 
-##      Anseriformes       Apodiformes  Caprimulgiformes   Charadriiformes 
-##                44                15                 5                81 
-##     Ciconiiformes     Columbiformes     Coraciiformes      Cuculiformes 
-##                29                11                 3                 3 
-##     Falconiformes       Galliformes       Gaviiformes        Gruiformes 
-##                31                21                 4                12 
-##     Passeriformes        Piciformes  Podicipediformes Procellariiformes 
-##               237                22                 6                 4 
-##    Psittaciformes      Strigiformes     Trogoniformes 
-##                 6                16                 1</code></pre>
+<pre class="r"><code>ecosphere %&gt;% 
+  summarise(n_genero=n_distinct(order))</code></pre>
+<pre><code>## # A tibble: 1 × 1
+##   n_genero
+##      &lt;int&gt;
+## 1       19</code></pre>
 <p>Problem 4. (2 points) Which habitat has the highest diversity (number
 of species) in the data?</p>
 <pre class="r"><code>glimpse(ecosphere)</code></pre>
@@ -534,6 +528,7 @@ of species) in the data?</p>
 ##    Wetland 153 0.27767695    0.28491620
 ##   Woodland 177 0.32123412    0.32960894
 ##       &lt;NA&gt;  14 0.02540835            NA</code></pre>
+<p>Woodland habitat has the highest diversity.</p>
 <p>Run the code below to learn about the <code>slice</code> function.
 Look specifically at the examples (at the bottom) for
 <code>slice_max()</code> and <code>slice_min()</code>. If you are still
@@ -571,10 +566,10 @@ largest and smallest winter range?</p>
 swans. Make a new object <code>ducks</code> that only includes species
 in the family Anatidae. Restrict this new dataframe to include all
 variables except order and family.</p>
-<pre class="r"><code>ducks &lt;- filter(ecosphere, family == &quot;Anatidae&quot;)
-ducks &lt;- select(ecosphere, -&quot;order&quot;, -&quot;family&quot;)
+<pre class="r"><code>ducks &lt;- filter(ecosphere, family == &quot;Anatidae&quot;) %&gt;% 
+select(-&quot;order&quot;, -&quot;family&quot;)
 ducks</code></pre>
-<pre><code>## # A tibble: 551 × 19
+<pre><code>## # A tibble: 44 × 19
 ##    commo…¹ scien…² diet  life_…³ habitat urban…⁴ migra…⁵ log10…⁶ mean_…⁷ mean_…⁸
 ##    &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
 ##  1 &quot;Ameri… Anas r… Vege… Long    Wetland No      Short      3.09     9       1  
@@ -587,7 +582,7 @@ ducks</code></pre>
 ##  8 &quot;Buffl… Buceph… Inve… Middle  Wetland No      Short      2.6      8.5     2  
 ##  9 &quot;Cackl… Branta… Vege… Middle  Wetland Yes     Short      3.45     5       1  
 ## 10 &quot;Canva… Aythya… Vege… Middle  Wetland No      Short      3.08     8       1  
-## # … with 541 more rows, 9 more variables: population_size &lt;dbl&gt;,
+## # … with 34 more rows, 9 more variables: population_size &lt;dbl&gt;,
 ## #   winter_range_area &lt;dbl&gt;, range_in_cbc &lt;dbl&gt;, strata &lt;dbl&gt;, circles &lt;dbl&gt;,
 ## #   feeder_bird &lt;chr&gt;, median_trend &lt;dbl&gt;, lower_95_percent_ci &lt;dbl&gt;,
 ## #   upper_95_percent_ci &lt;dbl&gt;, and abbreviated variable names ¹​common_name,
@@ -596,83 +591,171 @@ ducks</code></pre>
 <p>Problem 7. (2 points) We might assume that all ducks live in wetland
 habitat. Is this true for the ducks in these data? If there are
 exceptions, list the species below.</p>
-<pre class="r"><code>not_wet &lt;- filter(ecosphere, habitat != &quot;Wetland&quot;)
+<pre class="r"><code>not_wet &lt;- filter(ducks, habitat != &quot;Wetland&quot;)
 not_wet</code></pre>
-<pre><code>## # A tibble: 384 × 21
-##    order    family commo…¹ scien…² diet  life_…³ habitat urban…⁴ migra…⁵ log10…⁶
-##    &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;
-##  1 Anserif… Anati… Common… Somate… Inve… Middle  Ocean   No      Short      3.31
-##  2 Apodifo… Apodi… Vaux&#39;s… Chaetu… Inve… Short   Woodla… No      Modera…    1.28
-##  3 Apodifo… Apodi… White-… Aerona… Inve… Short   Various No      Short      1.49
-##  4 Apodifo… Troch… Allen&#39;… Selasp… Nect… Short   Shrubl… Yes     Modera…    0.53
-##  5 Apodifo… Troch… Anna&#39;s… Calypt… Nect… Short   Woodla… Yes     Short      0.63
-##  6 Apodifo… Troch… Black-… Archil… Nect… Middle  Woodla… Yes     Short      0.48
-##  7 Apodifo… Troch… Blue-t… Lampor… Nect… Short   Woodla… No      Short      0.88
-##  8 Apodifo… Troch… Broad-… Cynant… Nect… Short   Woodla… Yes     Withdr…    0.48
-##  9 Apodifo… Troch… Broad-… Selasp… Nect… Middle  Woodla… Yes     Modera…    0.55
-## 10 Apodifo… Troch… Buff-b… Amazil… Nect… Middle  Woodla… Yes     Reside…    0.6 
-## # … with 374 more rows, 11 more variables: mean_eggs_per_clutch &lt;dbl&gt;,
-## #   mean_age_at_sexual_maturity &lt;dbl&gt;, population_size &lt;dbl&gt;,
-## #   winter_range_area &lt;dbl&gt;, range_in_cbc &lt;dbl&gt;, strata &lt;dbl&gt;, circles &lt;dbl&gt;,
-## #   feeder_bird &lt;chr&gt;, median_trend &lt;dbl&gt;, lower_95_percent_ci &lt;dbl&gt;,
-## #   upper_95_percent_ci &lt;dbl&gt;, and abbreviated variable names ¹​common_name,
-## #   ²​scientific_name, ³​life_expectancy, ⁴​urban_affiliate, ⁵​migratory_strategy,
-## #   ⁶​log10_mass</code></pre>
+<pre><code>## # A tibble: 1 × 19
+##   common…¹ scien…² diet  life_…³ habitat urban…⁴ migra…⁵ log10…⁶ mean_…⁷ mean_…⁸
+##   &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+## 1 Common … Somate… Inve… Middle  Ocean   No      Short      3.31       5     2.5
+## # … with 9 more variables: population_size &lt;dbl&gt;, winter_range_area &lt;dbl&gt;,
+## #   range_in_cbc &lt;dbl&gt;, strata &lt;dbl&gt;, circles &lt;dbl&gt;, feeder_bird &lt;chr&gt;,
+## #   median_trend &lt;dbl&gt;, lower_95_percent_ci &lt;dbl&gt;, upper_95_percent_ci &lt;dbl&gt;,
+## #   and abbreviated variable names ¹​common_name, ²​scientific_name,
+## #   ³​life_expectancy, ⁴​urban_affiliate, ⁵​migratory_strategy, ⁶​log10_mass,
+## #   ⁷​mean_eggs_per_clutch, ⁸​mean_age_at_sexual_maturity</code></pre>
 <p>Problem 8. (4 points) In ducks, how is mean body mass associated with
 migratory strategy? Do the ducks that migrate long distances have high
 or low average body mass?</p>
+<pre class="r"><code>ducks %&gt;% 
+  select(&quot;log10_mass&quot;, &quot;migratory_strategy&quot;) %&gt;% 
+  arrange(migratory_strategy)</code></pre>
+<pre><code>## # A tibble: 44 × 2
+##    log10_mass migratory_strategy
+##         &lt;dbl&gt; &lt;chr&gt;             
+##  1       2.89 Long              
+##  2       2.85 Long              
+##  3       2.96 Moderate          
+##  4       3.11 Moderate          
+##  5       3.02 Moderate          
+##  6       2.56 Moderate          
+##  7       3.33 Moderate          
+##  8       3    Moderate          
+##  9       3.4  Moderate          
+## 10       2.75 Moderate          
+## # … with 34 more rows</code></pre>
+<p>On average, ducks that migrate long distances have lower body
+mass.</p>
 <p>Problem 9. (2 points) Accipitridae is the family that includes
 eagles, hawks, kites, and osprey. First, make a new object
 <code>eagles</code> that only includes species in the family
 Accipitridae. Next, restrict these data to only include the variables
 common_name, scientific_name, and population_size.</p>
-<pre class="r"><code>eagles &lt;- filter(ecosphere, family == &quot;Acciptridae&quot;)
-eagles &lt;- select(ecosphere, &quot;common_name&quot;, &quot;scientific_name&quot;, &quot;population_size&quot;)
+<pre class="r"><code>eagles &lt;- filter(ecosphere, family == &quot;Accipitridae&quot;) %&gt;% 
+select(&quot;common_name&quot;, &quot;scientific_name&quot;, &quot;population_size&quot;)
 eagles</code></pre>
-<pre><code>## # A tibble: 551 × 3
-##    common_name                      scientific_name                     popula…¹
-##    &lt;chr&gt;                            &lt;chr&gt;                                  &lt;dbl&gt;
-##  1 &quot;American Black Duck&quot;            Anas rubripes                             NA
-##  2 &quot;American Wigeon&quot;                Anas americana                            NA
-##  3 &quot;Barrow&#39;s Goldeneye&quot;             Bucephala islandica                       NA
-##  4 &quot;Black Brant&quot;                    Branta bernicla                           NA
-##  5 &quot;Black Scoter&quot;                   Melanitta americana                       NA
-##  6 &quot;Black-bellied Whistling-Duck&quot;   Dendrocygna autumnalis                    NA
-##  7 &quot;Blue-winged Teal&quot;               Anas discors                              NA
-##  8 &quot;Bufflehead&quot;                     Bucephala albeola                         NA
-##  9 &quot;Cackling and Canada Goose \xa0&quot; Branta hutchinsii and B. canadensis       NA
-## 10 &quot;Canvasback&quot;                     Aythya valisineria                        NA
-## # … with 541 more rows, and abbreviated variable name ¹​population_size</code></pre>
+<pre><code>## # A tibble: 20 × 3
+##    common_name         scientific_name          population_size
+##    &lt;chr&gt;               &lt;chr&gt;                              &lt;dbl&gt;
+##  1 Bald Eagle          Haliaeetus leucocephalus              NA
+##  2 Broad-winged Hawk   Buteo platypterus                1700000
+##  3 Cooper&#39;s Hawk       Accipiter cooperii                700000
+##  4 Ferruginous Hawk    Buteo regalis                      80000
+##  5 Golden Eagle        Aquila chrysaetos                 130000
+##  6 Gray Hawk           Buteo nitidus                         NA
+##  7 Harris&#39;s Hawk       Parabuteo unicinctus               50000
+##  8 Hook-billed Kite    Chondrohierax uncinatus               NA
+##  9 Northern Goshawk    Accipiter gentilis                200000
+## 10 Northern Harrier    Circus cyaneus                    700000
+## 11 Red-shouldered Hawk Buteo lineatus                   1100000
+## 12 Red-tailed Hawk     Buteo jamaicensis                2000000
+## 13 Rough-legged Hawk   Buteo lagopus                     300000
+## 14 Sharp-shinned Hawk  Accipiter striatus                500000
+## 15 Short-tailed Hawk   Buteo brachyurus                      NA
+## 16 Snail Kite          Rostrhamus sociabilis                 NA
+## 17 Swainson&#39;s Hawk     Buteo swainsoni                   540000
+## 18 White-tailed Hawk   Buteo albicaudatus                    NA
+## 19 White-tailed Kite   Elanus leucurus                       NA
+## 20 Zone-tailed Hawk    Buteo albonotatus                     NA</code></pre>
 <p>Problem 10. (4 points) In the eagles data, any species with a
 population size less than 250,000 individuals is threatened. Make a new
 column <code>conservation_status</code> that shows whether or not a
 species is threatened.</p>
 <pre class="r"><code>eagles%&gt;% 
-  mutate(conservation_status =(population_size &lt;= 250000))</code></pre>
-<pre><code>## # A tibble: 551 × 4
-##    common_name                      scientific_name              popul…¹ conse…²
-##    &lt;chr&gt;                            &lt;chr&gt;                          &lt;dbl&gt; &lt;lgl&gt;  
-##  1 &quot;American Black Duck&quot;            Anas rubripes                     NA NA     
-##  2 &quot;American Wigeon&quot;                Anas americana                    NA NA     
-##  3 &quot;Barrow&#39;s Goldeneye&quot;             Bucephala islandica               NA NA     
-##  4 &quot;Black Brant&quot;                    Branta bernicla                   NA NA     
-##  5 &quot;Black Scoter&quot;                   Melanitta americana               NA NA     
-##  6 &quot;Black-bellied Whistling-Duck&quot;   Dendrocygna autumnalis            NA NA     
-##  7 &quot;Blue-winged Teal&quot;               Anas discors                      NA NA     
-##  8 &quot;Bufflehead&quot;                     Bucephala albeola                 NA NA     
-##  9 &quot;Cackling and Canada Goose \xa0&quot; Branta hutchinsii and B. ca…      NA NA     
-## 10 &quot;Canvasback&quot;                     Aythya valisineria                NA NA     
-## # … with 541 more rows, and abbreviated variable names ¹​population_size,
-## #   ²​conservation_status</code></pre>
+  mutate(conservation_status =(population_size &lt; 250000))</code></pre>
+<pre><code>## # A tibble: 20 × 4
+##    common_name         scientific_name          population_size conservation_s…¹
+##    &lt;chr&gt;               &lt;chr&gt;                              &lt;dbl&gt; &lt;lgl&gt;           
+##  1 Bald Eagle          Haliaeetus leucocephalus              NA NA              
+##  2 Broad-winged Hawk   Buteo platypterus                1700000 FALSE           
+##  3 Cooper&#39;s Hawk       Accipiter cooperii                700000 FALSE           
+##  4 Ferruginous Hawk    Buteo regalis                      80000 TRUE            
+##  5 Golden Eagle        Aquila chrysaetos                 130000 TRUE            
+##  6 Gray Hawk           Buteo nitidus                         NA NA              
+##  7 Harris&#39;s Hawk       Parabuteo unicinctus               50000 TRUE            
+##  8 Hook-billed Kite    Chondrohierax uncinatus               NA NA              
+##  9 Northern Goshawk    Accipiter gentilis                200000 TRUE            
+## 10 Northern Harrier    Circus cyaneus                    700000 FALSE           
+## 11 Red-shouldered Hawk Buteo lineatus                   1100000 FALSE           
+## 12 Red-tailed Hawk     Buteo jamaicensis                2000000 FALSE           
+## 13 Rough-legged Hawk   Buteo lagopus                     300000 FALSE           
+## 14 Sharp-shinned Hawk  Accipiter striatus                500000 FALSE           
+## 15 Short-tailed Hawk   Buteo brachyurus                      NA NA              
+## 16 Snail Kite          Rostrhamus sociabilis                 NA NA              
+## 17 Swainson&#39;s Hawk     Buteo swainsoni                   540000 FALSE           
+## 18 White-tailed Hawk   Buteo albicaudatus                    NA NA              
+## 19 White-tailed Kite   Elanus leucurus                       NA NA              
+## 20 Zone-tailed Hawk    Buteo albonotatus                     NA NA              
+## # … with abbreviated variable name ¹​conservation_status</code></pre>
 <p>Problem 11. (2 points) Consider the results from questions 9 and 10.
 Are there any species for which their threatened status needs further
 study? How do you know?</p>
+<pre class="r"><code>eagles %&gt;% 
+   mutate(conservation_status =(population_size &lt; 250000)) %&gt;% 
+select(-&quot;scientific_name&quot;, -&quot;population_size&quot;)</code></pre>
+<pre><code>## # A tibble: 20 × 2
+##    common_name         conservation_status
+##    &lt;chr&gt;               &lt;lgl&gt;              
+##  1 Bald Eagle          NA                 
+##  2 Broad-winged Hawk   FALSE              
+##  3 Cooper&#39;s Hawk       FALSE              
+##  4 Ferruginous Hawk    TRUE               
+##  5 Golden Eagle        TRUE               
+##  6 Gray Hawk           NA                 
+##  7 Harris&#39;s Hawk       TRUE               
+##  8 Hook-billed Kite    NA                 
+##  9 Northern Goshawk    TRUE               
+## 10 Northern Harrier    FALSE              
+## 11 Red-shouldered Hawk FALSE              
+## 12 Red-tailed Hawk     FALSE              
+## 13 Rough-legged Hawk   FALSE              
+## 14 Sharp-shinned Hawk  FALSE              
+## 15 Short-tailed Hawk   NA                 
+## 16 Snail Kite          NA                 
+## 17 Swainson&#39;s Hawk     FALSE              
+## 18 White-tailed Hawk   NA                 
+## 19 White-tailed Kite   NA                 
+## 20 Zone-tailed Hawk    NA</code></pre>
+<p>The Ferruginous Hawk, Golden Eagle, Harris’s Hawk, and Northern
+Goshawk are threatened because their population size is below
+250000.</p>
 <p>Problem 12. (4 points) Use the <code>ecosphere</code> data to perform
 one exploratory analysis of your choice. The analysis must have a
 minimum of three lines and two functions. You must also clearly state
 the question you are attempting to answer.</p>
+<pre class="r"><code>glimpse(ecosphere)</code></pre>
+<pre><code>## Rows: 551
+## Columns: 21
+## $ order                       &lt;chr&gt; &quot;Anseriformes&quot;, &quot;Anseriformes&quot;, &quot;Anserifor…
+## $ family                      &lt;chr&gt; &quot;Anatidae&quot;, &quot;Anatidae&quot;, &quot;Anatidae&quot;, &quot;Anati…
+## $ common_name                 &lt;chr&gt; &quot;American Black Duck&quot;, &quot;American Wigeon&quot;, …
+## $ scientific_name             &lt;chr&gt; &quot;Anas rubripes&quot;, &quot;Anas americana&quot;, &quot;Buceph…
+## $ diet                        &lt;chr&gt; &quot;Vegetation&quot;, &quot;Vegetation&quot;, &quot;Invertebrates…
+## $ life_expectancy             &lt;chr&gt; &quot;Long&quot;, &quot;Middle&quot;, &quot;Middle&quot;, &quot;Long&quot;, &quot;Middl…
+## $ habitat                     &lt;chr&gt; &quot;Wetland&quot;, &quot;Wetland&quot;, &quot;Wetland&quot;, &quot;Wetland&quot;…
+## $ urban_affiliate             &lt;chr&gt; &quot;No&quot;, &quot;No&quot;, &quot;No&quot;, &quot;No&quot;, &quot;No&quot;, &quot;No&quot;, &quot;No&quot;, …
+## $ migratory_strategy          &lt;chr&gt; &quot;Short&quot;, &quot;Short&quot;, &quot;Moderate&quot;, &quot;Moderate&quot;, …
+## $ log10_mass                  &lt;dbl&gt; 3.09, 2.88, 2.96, 3.11, 3.02, 2.88, 2.56, …
+## $ mean_eggs_per_clutch        &lt;dbl&gt; 9.0, 7.5, 10.5, 3.5, 9.5, 13.5, 10.0, 8.5,…
+## $ mean_age_at_sexual_maturity &lt;dbl&gt; 1.0, 1.0, 3.0, 2.5, 2.0, 1.0, 0.6, 2.0, 1.…
+## $ population_size             &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ winter_range_area           &lt;dbl&gt; 3212473, 7145842, 1812841, 360134, 854350,…
+## $ range_in_cbc                &lt;dbl&gt; 99.1, 61.7, 69.8, 53.7, 5.3, 0.5, 17.9, 72…
+## $ strata                      &lt;dbl&gt; 82, 124, 37, 19, 36, 5, 26, 134, 145, 103,…
+## $ circles                     &lt;dbl&gt; 1453, 1951, 502, 247, 470, 97, 479, 2189, …
+## $ feeder_bird                 &lt;chr&gt; &quot;No&quot;, &quot;No&quot;, &quot;No&quot;, &quot;No&quot;, &quot;No&quot;, &quot;No&quot;, &quot;No&quot;, …
+## $ median_trend                &lt;dbl&gt; 1.014, 0.996, 1.039, 0.998, 1.004, 1.196, …
+## $ lower_95_percent_ci         &lt;dbl&gt; 0.971, 0.964, 1.016, 0.956, 0.975, 1.152, …
+## $ upper_95_percent_ci         &lt;dbl&gt; 1.055, 1.009, 1.104, 1.041, 1.036, 1.243, …</code></pre>
+<pre class="r"><code>ecosphere %&gt;% 
+  filter(family==&quot;Charadriidae&quot;) %&gt;% 
+  tabyl(habitat)</code></pre>
+<pre><code>##    habitat n    percent
+##  Grassland 2 0.16666667
+##      Ocean 5 0.41666667
+##    Various 1 0.08333333
+##    Wetland 4 0.33333333</code></pre>
 <p>Please provide the names of the students you have worked with with
-during the exam:</p>
+during the exam: Tim Pham</p>
 <p>Please be 100% sure your exam is saved, knitted, and pushed to your
 github repository. No need to submit a link on canvas, we will find your
 exam in your repository.</p>
