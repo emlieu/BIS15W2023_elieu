@@ -110,18 +110,18 @@ Reference: Koerner SE, Poulsen JR, Blanchard EJ, Okouyi J, Clark CJ. Vertebrate 
 
 9. (2 points) Load `IvindoData_DryadVersion.csv` and use the function(s) of your choice to get an idea of the overall structure. Change the variables `HuntCat` and `LandUse` to factors.
 ```{r}
-invindodata <- readr::read_csv("data/IvindoData_DryadVersion.csv")
-glimpse(invindodata)
+ivindodata <- readr::read_csv("data/IvindoData_DryadVersion.csv")
+glimpse(ivindodata)
 ```
 ```{r}
-invindodata$HuntCat <- as.factor(invindodata$HuntCat)
-invindodata$LandUse <- as.factor(invindodata$LandUse)
+ivindodata$HuntCat <- as.factor(ivindodata$HuntCat)
+ivindodata$LandUse <- as.factor(ivindodata$LandUse)
 ```
 
 
 10. (4 points) For the transects with high and moderate hunting intensity, how does the average diversity of birds and mammals compare?
 ```{r}
-invindodata %>% 
+ivindodata %>% 
   filter(HuntCat == "High" | HuntCat == "Moderate") %>% 
   summarize(mean_div_bird = mean(Diversity_BirdSpecies),
               mean_div_mammal = mean(Diversity_MammalSpecies))
@@ -129,6 +129,15 @@ invindodata %>%
 There is a higher mean diversity of mammals. 
 
 11. (4 points) One of the conclusions in the study is that the relative abundance of animals drops off the closer you get to a village. Let's try to reconstruct this (without the statistics). How does the relative abundance (RA) of apes, birds, elephants, monkeys, rodents, and ungulates compare between sites that are less than 3km from a village to sites that are greater than 25km from a village? The variable `Distance` measures the distance of the transect from the nearest village. Hint: try using the `across` operator.  
-
+```{r}
+ivindodata %>% 
+  filter(Distance < 3) %>% 
+  summarise(across(c(RA_Apes, RA_Birds, RA_Elephant, RA_Monkeys, RA_Ungulate), n_distinct))
+```
+```{r}
+ivindodata %>% 
+  filter(Distance > 25) %>% 
+  summarise(across(c(RA_Apes, RA_Birds, RA_Elephant, RA_Monkeys, RA_Ungulate), n_distinct))
+```
 
 12. (4 points) Based on your interest, do one exploratory analysis on the `gabon` data of your choice. This analysis needs to include a minimum of two functions in `dplyr.`
