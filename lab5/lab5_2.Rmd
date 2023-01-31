@@ -73,7 +73,7 @@ superhero_powers <- janitor::clean_names(superhero_powers)
 ```
 
 ## `tabyl`
-The `janitor` package has many awesome functions that we will explore. Here is its version of `table` which not only produces counts but also percentages. Very handy! Let's use it to explore the proportion of good guys and bad guys in the `superhero_info` data.  
+The `janitor` package has many awesome functions that we will explore. Here is its version of `table` which not only w. Very handy! Let's use it to explore the proportion of good guys and bad guys in the `superhero_info` data.  
 
 ```{r}
 tabyl(superhero_info, alignment)

@@ -1,0 +1,395 @@
+---
+title: "cheatsheet"
+author: "emily"
+date: "2023-01-31"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### First Things First!
+```{r}
+#library(tidyverse)
+#install.packages("tidyverse")
+#library(janitor)
+#install.packages("janitor")
+```
+
+## Formating Funsies
+#title
+_italics_ 
+**bold**
+insert website links:
+[webpage name](website URL)
+insert email links:
+[person name](mailto:emailaddress)
+
+###Lab One 
+##get your working directory!
+```{r}
+getwd()
+```
+##basic arithmetic
+```{r}
+4+4
+4*4
+(4+2)/3
+4+3/3
+```
+##Assigning vectors and how to use 'em
+```{r}
+x <- c(1, 2, 3, 4, 5, 6) #c stands for concatenate, but basically means combine
+```
+```{r}
+mean(x)
+median(x)
+sd(x)
+```
+
+### Lab Two
+##objects and what to do with 'em
+```{r}
+x <- 5
+#read as: x gets 5
+#note: unlike vector, there is no c or multitude of #s, just one
+```
+
+```{r}
+objects_can_also_be_words <- 4
+```
+```{r}
+sum (x, objects_can_also_be_words)
+```
+```{r}
+add_objects <- x + objects_can_also_be_words
+```
+
+```{r}
+add_objects_diff <- sum (x, objects_can_also_be_words)
+```
+
+## Types of Data
+```{r}
+my_numeric <- 42
+my_integer <- 2L #adding an L automatically denotes an integer
+my_character <- "universe"
+my_logical <- FALSE
+my_complex <- 2+4i
+```
+#What kind of data am I working with?
+```{r}
+class(my_numeric) #or you can do:
+is.integer(my_numeric) #is my_numeric an integer?
+```
+
+## NAs, Missing Data
+```{r}
+my_missing <- NA
+```
+```{r}
+is.na(my_missing)
+```
+```{r}
+anyNA(my_missing)
+```
+```{r}
+mean(new_vector, na.rm=T) #na.rm=T removes the NA values in the vector
+```
+
+## More Vector Stuff
+```{r}
+my_vector <- c(10, 20, 30) #numeric vector
+```
+```{r}
+days_of_the_week <- c("Monday", "Tuesday", "Wednesday", "Thrusday", "Friday", "Saturday", "Sunday") #charactor vector, because all characters have quotes and can be called "strings"
+```
+```{r}
+my_vector_sequence <- c(1:100) #assigns vector the numbers 1 to 100
+```
+#Vector Elements
+```{r}
+days_of_the_week[3] #[] to pull out elements in the vector as long as their position is specified (3 = third input = wednesday)
+```
+
+## Data Matrices
+```{r}
+Philosophers_Stone <- c(317.5, 657.1) #data matrices is a series of stacked vectors
+Chamber_of_Secrets <- c(261.9, 616.9)
+Prisoner_of_Azkaban <- c(249.5, 547.1)
+Goblet_of_Fire <- c(290.0, 606.8)
+Order_of_the_Phoenix <- c(292.0, 647.8)
+Half_Blood_Prince <- c(301.9, 632.4)
+Deathly_Hallows_1 <- c(295.9, 664.3)
+Deathly_Hallows_2 <- c(381.0, 960.5)
+```
+```{r}
+box_office <- c(Philosophers_Stone, Chamber_of_Secrets, Prisoner_of_Azkaban, Goblet_of_Fire, Order_of_the_Phoenix, Half_Blood_Prince, Deathly_Hallows_1, Deathly_Hallows_2) 
+#combine all your vectors into a new object
+```
+```{r}
+harry_potter_matrix <- matrix(box_office, nrow = 8, byrow = T)
+#use <- matrix function to assign your object to create a new matrix, and tell it how to organize with nrow and byrow
+```
+```{r}
+region <- c("US", "non-US") #create new vectors to use for naming
+titles <- c("Philosophers_Stone", "Chamber_of_Secrets", "Prisoner_of_Azkaban", "Goblet_of_Fire", "Order_of_the_Phoenix", "Half_Blood_Prince", "Deathly_Hallows_1", "Deathly_Hallows_2")
+```
+```{r}
+colnames(harry_potter_matrix) <- region #name your column and row with your vectors
+rownames(harry_potter_matrix) <- titles
+```
+```{r}
+#print that bitch out!
+harry_potter_matrix
+```
+
+#Using a Data Matrix
+```{r}
+global <- rowSums(harry_potter_matrix) #you can calculate the total earnings of each movie
+```
+```{r}
+harry_potter_matrix[2,1] #we can select values or a series of values with a data matrix
+harry_potter_matrix[1:4] #we can select a series a values with :
+non_us_earnings <- all_harry_potter_matrix[ ,2]
+mean(non_us_earnings) #select whole columns and do math!
+```
+
+#Adding Rows and Columns
+```{r}
+all_harry_potter_matrix <- cbind(harry_potter_matrix, global)
+#note we are making a new object to reflect the addition of a new column with the cbind
+```
+```{r}
+total_earnings <- colSums(all_harry_potter_matrix)
+final_harry_potter_matrix <- rbind(all_harry_potter_matrix, total_earnings) 
+#create the new object, then add a new row via rbind
+```
+
+### Lab Three
+##Data Frame
+```{r}
+Sex <- c("male", "female", "male") #let's make some vectors to put in the data frame
+Length <- c(3.2, 3.7, 3.4)
+Weight <- c(2.9, 4.0, 3.1)
+```
+```{r}
+hbirds <- data.frame(Sex, Length, Weight) #BOOM data frame via <- data.frame
+```
+
+**note** Data Matrix vs Data Frame?
+Data Matrix is cleaner, identifies the class of variables, info about the class
+dbl: double precision floating point
+
+#analyzing a data frame
+```{r}
+names(hbirds) #these do the same thing
+colnames(hbirds)
+```
+```{r}
+dim(hbirds) #dimensions and structure
+str(hbirds)
+```
+```{r}
+hbirds <- data.frame(sex = Sex, length_in = Length, weight_oz = Weight) #renaming
+```
+```{r}
+w <- hbirds$weight_oz # use $ to select values in a whole column
+mean(w)
+```
+```{r}
+hbirds$neighborhood <- c("lakewood", "brentwood", "lakewood", "scenic Heights")
+hbirds
+#add rows like with a data matrix: make new vector and rbind
+#with columns, we can use the $
+```
+
+
+## .csv Files
+```{r}
+write.csv(hbirds, "what_you_want_for_the_name.csv", row.names = FALSE)
+# use this to save as .csv file
+# row.names = FALSE means row numbers won't be printed
+```
+```{r}
+readr::read_csv("hsprings_data.csv")
+# to import the data; you can control where Rstudio looks by adding "data/" to tell it to look in the data folder.
+hot_springs <- readr::read_csv("hsprings_data.csv")
+#you can aslo assign it to an object
+```
+#Analyzing .csv Files
+```{r}
+class(hot_springs$scientist) # what class is this column of data?
+hot_springs$scientist <- as.factor(hot_springs$scientist) #changing the class to factor
+levels(hot_springs$scientist) #showing the levels of the factor
+```
+```{r}
+summary(filename)
+```
+```{r}
+glimpse(filename)
+```
+```{r}
+nrow(filename) #the number of rows or observations
+```
+```{r}
+ncol(filename) #the number of columns or variables
+```
+```{r}
+head(filename, n = 10) #prints first n rows of data
+```
+```{r}
+tail(filename, n = 10) #prints last n rows of data
+```
+```{r}
+table(.csv_object$variable) #makes a table using that variable in the file, produces counts
+```
+```{r}
+View(fish) #opens the table, or you can do so in environment tab
+```
+
+### Lab Four
+# Filter and Select
+```{r}
+object <- filter(filename, observation) #pulls out observations (rows) that meet specific criteria
+```
+```{r}
+select(filename, "column1", "column2") #select pulls out columns of interest
+```
+```{r}
+select(filename, start_col:end_col) #select a range of columns
+```
+```{r}
+select(filename, -colno, -colbad, -colwrong) # - selects everything except specified
+```
+```{r}
+select(filename, contains("word")) #only select variables with "word" in it
+```
+```{r}
+select(filename, starts_with("word")) #take a wild guess.
+```
+```{r}
+select(filename, matches("a.+er")) #select variable containing letter + subsequent string like "er"
+```
+```{r}
+select_if(fish, is.numeric) #select based on class of data
+```
+```{r}
+select_if(fish, ~!is.numeric(.)) #select all columns NOT a class of data
+
+```
+```{r}
+filter(object, column == "observation") #can use & for multiple things to pull, or | for or
+```
+```{r}
+filter(object, column %in% c(rowvalue)) #Filtering multiple values within the same variable requires the `%in%`
+```
+```{r}
+filter(object, between(column, rowvalue, rowvalue)) #use `between` if you are looking for a range of specific values
+```
+```{r}
+filter(object, near(column, rowvalue, tol = your_tolerance)) #note: rowvalue has to be a numeric
+
+```
+
+**note**
+filter = rows = observations
+select = columns = variables
+filter operators: >, >=, <, <=, != (not equal), and == (equal)
+! excludes specific observations
+1. ends_with() = Select columns that end with a character string  
+2. contains() = Select columns that contain a character string  
+3. matches() = Select columns that match a regular expression  
+4. one_of() = Select columns names that are from a group of names 
+
+#Organize Within the Data Frame
+```{r}
+object <- select_all(data.frame, tolower)
+#makes column names all lower case; also works with toupper
+```
+```{r}
+select_all(object, ~str_replace(., " ", "_"))
+#replaces funky shit like blank spaces
+```
+
+### Lab Five
+##Pipes via ctrl + shift + m
+Feeds the output from one function into the input of another function. This helps us keep our code sequential and clean
+```{r}
+mammals %>% #example from lab 5
+  select(family, genus, species, gestation) %>% 
+  filter(gestation>=15)
+```
+## Arrange
+```{r}
+fish %>%  #example from lab 5
+  select(lakeid, scalelength) %>% 
+  arrange(desc(scalelength)) # desc means large -> small, but usually its from small -> large
+```
+## Mutate
+allows us to create a new column from existing columns in a data frame
+```{r}
+fish %>% #used mutate to create a new length column out of an old one
+  mutate(length_mm = length*10) %>% 
+  select(fish_id, length, length_mm)
+```
+# Mutate_all
+```{r}
+mammals %>%
+  mutate_all(tolower)
+```
+useful for cleaning data
+```{r}
+mammals %>% 
+  mutate(across(c("order", "family"), tolower))
+```
+Using the across function we can specify individual columns.
+# Ifelse
+```{r}
+mammals %>% 
+  select(genus, species, newborn) %>%
+  mutate(newborn_new = ifelse(newborn == -999.00, NA, newborn))%>% 
+  arrange(newborn)
+```
+you first specify a logical statement, afterwards what needs to happen if the statement returns `TRUE`, and lastly what needs to happen if it's  `FALSE`
+
+##Janitor
+```{r}
+  janitor::clean_names(variable)
+```
+##Tabyl
+```{r}
+tabyl(object, column) #produces counts but also percentages
+```
+## Big Fat Juicy Example
+Let's do a bit more practice to make sure that we understand `select()`, `filter()`, and `mutate()`. Start by building a new data frame `msleep24` from the `msleep` data that: contains the `name` and `vore` variables along with a new column called `sleep_total_24` which is the amount of time a species sleeps expressed as a proportion of a 24-hour day. Remove any rows with NA's and restrict the `sleep_total_24` values to less than 0.3. Arrange the output in descending order.  
+```{r}
+msleep24 <- msleep %>% 
+  mutate(sleep_total_24 = sleep_total/24) %>% 
+  select(name, vore, sleep_total_24) %>% 
+  filter(!is.na(vore)) %>% #removing NAs from a variable
+  filter(sleep_total_24<=.3) %>% 
+  arrange(desc(sleep_total_24))
+```
+
+### Lab Six
+```{r}
+summarise() #literally what do you think it does bro
+```
+```{r}
+skim() #find # of unique observations within a variable
+```
+```{r}
+hist(object$observation) #makes a histogram of ur stuff
+```
+#summarize example
+```{r}
+msleep %>% 
+  filter(order == "Primates") %>% 
+  summarize(mean_bodywt = mean(bodywt), 
+              min_bodywt = min(bodywt),
+              max_bodywt = max(bodywt),
+            total = n())
+```
+
