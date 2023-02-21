@@ -148,7 +148,7 @@ gapminder %>%
   select(country, year, pop) %>% 
   ggplot(aes(x=year, y=pop, color=country))+
   geom_line()+
-   labs(title = "Global Population Growth By Continent (1952-2007)",
+   labs(title = "Global Population Growth By Country (1952-2007)",
        x = "Year",
        y = "Population")
 ```
@@ -160,7 +160,7 @@ gapminder %>%
   filter(country=="China" | country=="India" | country=="United States" | country=="Indonesia" | country=="Brazil") %>% 
   ggplot(aes(x=year, y=gdpPercap, color=country))+
   geom_line()+
-   labs(title = "Per Capita GDP Growth By Continent",
+   labs(title = "Per Capita GDP Growth By Country",
        x = "Year",
        y = "GDP")
 ```
