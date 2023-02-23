@@ -5,8 +5,68 @@ date: "2023-01-31"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+### Table of Contents
+##Lab 7
+```{r}
+across(): filter + select across multiple variables
+count(): combination of `group_by()` and `summarize()` but just shows the number of observations
+naniar::miss_var_summary(object)
+na_if("-999")
+summarise_all(~(sum(is.na(.))))
+```
+
+##Lab 8
+```{r}
+#if there's a shit ton of variables, its wide
+#if there's a shit ton of observations, its long
+pivot_longer(cols, names_to, values_to)
+  cols: Columns to pivot to longer format
+  names_to: Name of the new column; it will contain the column names of gathered columns as values
+  values_to: Name of the new column; it will contain the data stored in the values of gathered columns
+separate(col, into= c("new col1", "new col 2"), sep = "_")
+pivot_wider(names_from, values_from)  
+  names_from: Values in the `names_from` column will become new column names  
+  values_from: Cell values will be taken from the `values_from` column 
+```
+
+##Lab 9
+```{r}
+discrete: quantitative; integers
+continuous: quantitative; any numerical value
+categorical: qualitative; limited number of values
+ggplot() + geom_() + aesthetics
+labs()
+coord_flip()
+```
+
+##Lab 10
+```{r}
+scale_y_log10()
+scale_x_log10()
+options(scipen=999): cancels out the scientific notation
+geom_smooth(method=lm, se=F): line of best fit
+theme(): adjust size and face of text
+fill= : stacked bar plot 
+position="dodge": has counts shown side-by side
+group= :  unites observations in a categorical variable
+```
+
+##Lab 11
+```{r}
+grDevices::colors()
+overlaying graphs; ggplot() + geom_histogram()+ geom_denity()
+bins= : for histograms, specifies number of bins that encompass a range of observations
+case_when(): breaks up a column into ranges of values and turns them into new column
+quartiles <- quantcut(col1$col2): separates data into ranges for you
+table(quartiles): to display
+legend.position= : changes legend position
+ls("package:ggthemes")[grepl("theme_", ls("package:ggthemes"))]
+display.brewer.pal(4,"GnBu")
+scale_colour_brewer(): is for points  
+scale_fill_brewer(): is for fills  
+pelteer: custom color palettes
+facet_wrap(): makes a ribbon of panels
+facet_grid(): allows control over the faceted variable, allow the comparison of two categorical variables
 ```
 
 ### First Things First!
@@ -15,6 +75,18 @@ knitr::opts_chunk$set(echo = TRUE)
 #install.packages("tidyverse")
 #library(janitor)
 #install.packages("janitor")
+#library(here)
+#install.packages("here")
+#library(naniar)
+#install.packages("naniar")
+#install.packages("RColorBrewer")
+#library(RColorBrewer)
+#install.packages("paletteer")
+#library(paletteer)
+#install.packages("ggthemes")
+#library(ggthemes)
+#install.packages("gtools")
+#library(gtools)
 ```
 
 ## Formating Funsies
