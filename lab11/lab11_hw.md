@@ -1,7 +1,7 @@
 ---
 title: "Lab 11 Homework"
 author: "Emily Lieu"
-date: "2023-02-20"
+date: "2023-02-21"
 output:
   html_document:
     theme: spacelab
@@ -254,8 +254,15 @@ gapminder %>%
 **10. Make one plot of your choice that uses faceting!**
 
 ```r
-#to be done in class 2/21/23
+gapminder %>% 
+  filter(country=="China" | country=="India" | country=="United States" | country=="Indonesia" | country=="Brazil") %>% 
+  select(country, year, pop) %>% 
+  ggplot(aes(x=year, y=pop, color=country))+
+  geom_line()+
+   facet_wrap(~country)
 ```
+
+![](lab11_hw_files/figure-html/unnamed-chunk-16-1.png)<!-- -->
 
 
 ## Push your final code to GitHub!
