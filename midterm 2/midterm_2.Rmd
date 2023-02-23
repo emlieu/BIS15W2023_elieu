@@ -86,6 +86,7 @@ surgery %>%
 4. (3 points) Make a plot that shows the range of age associated with gender.
 ```{r}
 surgery %>% 
+    filter(gender != "NA") %>% 
   ggplot(aes(x= gender, y= age, fill= gender))+ 
   geom_boxplot()+
   labs(title= "Age Range vs Gender", 
@@ -104,6 +105,7 @@ surgery
 
 ```{r}
 surgery %>% 
+  filter(asa_status != "NA") %>% 
 ggplot(aes(x= asa_status, fill= asa_status)) +
   geom_bar(position= "dodge")+
   labs(title = "ASA Status",
@@ -114,8 +116,13 @@ ggplot(aes(x= asa_status, fill= asa_status)) +
 6. (3 points) Create a plot that displays the distribution of body mass index for each `asa_status` as a probability distribution- not a histogram. (hint: use faceting!)
 ```{r}
 surgery %>% 
-  ggplot(aes(x= asa_status, y= bmi, fill=asa_status)+
-  geom_boxplot()
+    filter(asa_status != "NA") %>% 
+  ggplot(aes(x= bmi))+
+  geom_density(na.rm = T)+
+  facet_wrap(~asa_status)+
+  labs(title = "BMI Distribution For Each ASA Status", 
+       x= "ASA Status",
+       y= "BMI")
   
 ```
 
@@ -123,13 +130,102 @@ surgery %>%
 The variable `ccsmort30rate` is a measure of the overall 30-day mortality rate associated with each type of operation. The variable `ccscomplicationrate` is a measure of the 30-day in-hospital complication rate. The variable `ahrq_ccs` lists each type of operation.  
 
 7. (4 points) What are the 5 procedures associated with highest risk of 30-day mortality AND how do they compare with the 5 procedures with highest risk of complication? (hint: no need for a plot here)
+```{r}
+colnames(surgery)
+```
+
+```{r}
+surgery %>% 
+  group_by(ahrq_ccs) %>% 
+  summarize("avg_mort"= mean(ccsmort30rate)) %>% 
+  slice_max(avg_mort,n=5)
+```
+```{r}
+surgery %>% 
+  group_by(ahrq_ccs) %>% 
+  summarize("avg_compl" = mean(ccscomplicationrate)) %>% 
+  slice_max(avg_compl,n=5)
+```
+
 
 8. (3 points) Make a plot that compares the `ccsmort30rate` for all listed `ahrq_ccs` procedures.
+```{r}
+surgery %>% 
+  ggplot(aes(x= ahrq_ccs, y=ccsmort30rate))+
+  geom_col()+
+  coord_flip()+
+  labs(title = "CCS Mort Rate vs AHRQ CCS",
+       x= "AHRQ CCS",
+       y= "CCS Mort Rate")
+```
+
 
 9. (4 points) When is the best month to have surgery? Make a chart that shows the 30-day mortality and complications for the patients by month. `mort30` is the variable that shows whether or not a patient survived 30 days post-operation.
+```{r}
+colnames(surgery)
+```
+
+```{r}
+surgery %>% 
+  select(month,mort30) %>% 
+  mutate("count_mort" = as.factor(mort30)) %>% 
+  group_by(month) %>% 
+  count(count_mort) %>% 
+  pivot_wider(names_from= count_mort,
+               values_from= n) %>% 
+  mutate(die_rate = (Yes / (No + Yes))) %>% 
+  arrange(desc(die_rate)) 
+```
+```{r}
+surgery %>% 
+  select(month,complication) %>% 
+  mutate("count_compl" = as.factor(complication)) %>% 
+  group_by(month) %>% 
+  count(count_compl) %>% 
+  pivot_wider(names_from= count_compl,
+               values_from= n) %>% 
+  mutate(die_rate = (Yes / (No + Yes))) %>% 
+  arrange(desc(die_rate))
+```
+
 
 10. (4 points) Make a plot that visualizes the chart from question #9. Make sure that the months are on the x-axis. Do a search online and figure out how to order the months Jan-Dec.
+```{r}
+surgery %>% 
+  select(month,mort30) %>% 
+  mutate("count_mort" = as.factor(mort30)) %>% 
+  group_by(month) %>% 
+  count(count_mort) %>% 
+  pivot_wider(names_from= count_mort,
+               values_from= n) %>% 
+  mutate(die_rate = (Yes / (No + Yes))) %>% 
+  arrange(desc(die_rate)) %>% 
+  ggplot(aes(x= month, y= die_rate, fill= month))+
+  geom_col()+
+  scale_x_discrete(limits=month.abb)+
+  labs(title= "When To Not Get Surgery",
+       x= "Month",
+       y= "Die Rate")
+```
+```{r}
+surgery %>% 
+  select(month,complication) %>% 
+  mutate("count_compl" = as.factor(complication)) %>% 
+  group_by(month) %>% 
+  count(count_compl) %>% 
+  pivot_wider(names_from= count_compl,
+               values_from= n) %>% 
+  mutate(die_rate = (Yes / (No + Yes))) %>% 
+  arrange(desc(die_rate)) %>% 
+  ggplot(aes(x= month, y= die_rate, fill= month))+
+  geom_col()+
+  scale_x_discrete(limits=month.abb)+
+  labs(title= "When To Not Get Surgery",
+       x= "Month",
+       y= "Die Rate")
+```
+
 
 Please provide the names of the students you have worked with with during the exam:
-
+Tim and Jacob
 Please be 100% sure your exam is saved, knitted, and pushed to your github repository. No need to submit a link on canvas, we will find your exam in your repository.
