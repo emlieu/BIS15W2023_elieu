@@ -277,6 +277,9 @@ wolves <- read_csv("data/wolves_data/wolves_dataset.csv")
 ```{r}
 names(wolves)
 ```
+```{r}
+wolves
+```
 
 ```{r}
 wolves %>% 
@@ -299,27 +302,26 @@ ui <- dashboardPage(
   dashboardHeader(title = "Sexual Composition By Wolf Pack Population"),
   dashboardSidebar(disable=T),
   dashboardBody(
-  selectInput("population", "Select Wolf Population", choices= c("AK.PEN", "BAN.JAS", "BC", "DENALI", "ELLES", "GTNP", "INT,AK", "MEXICAN", "MI", "MT", "N.NWT", "ONT", "SE.AK", "SNF", "SS.NWT", "YNP", "YUCH" ), selected="AK.PEN"),
+  selectInput("x", "Select Wolf Population", choices= c("AK.PEN", "BAN.JAS", "BC", "DENALI", "ELLES", "GTNP", "INT.AK", "MEXICAN", "MI", "MT", "N.NWT", "ONT", "SE.AK", "SNF", "SS.NWT", "YNP", "YUCH" ), selected="AK.PEN"),
                 plotOutput("plot", width="600px", height="500px")
 ))
 
 server <- function(input, output, session) {
   output$plot <- renderPlot({
     wolves %>% 
-  group_by(pop) %>% 
   filter(sex != "NA") %>% 
-  count(sex) %>% 
-  ggplot(aes(x="sex", fill=sex))+
+  filter(pop== input$x) %>% 
+  ggplot(aes_string(x="sex", fill="sex"))+
   geom_bar(position= "dodge", alpha= .8, color= "black")+
-      theme_light(base_size= 18)+
-      labs(x= "Sex",
-           y= "Count")
+      theme_light(base_size= 18)
   })
   session$onSessionEnded(stopApp) 
 }
 
 shinyApp(ui, server)
 ```
+
+
 ```{r}
 ui <- fluidPage(titlePanel("Homerange Locomotion"),
                 radioButtons("x", "Select Fill Variable", choices=c("trophic.guild", "thermoregulation"), selected="trophic.guild"),
