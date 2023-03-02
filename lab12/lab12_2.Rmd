@@ -287,8 +287,11 @@ wolves %>%
 wolves %>% 
   group_by(pop) %>% 
   filter(sex != "NA") %>% 
-  count(sex)
+  count(sex) %>% 
+  pivot_wider(names_from = "pop", 
+              values_from = "n")
 ```
+
 
 
 ```{r}
