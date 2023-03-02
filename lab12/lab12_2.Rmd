@@ -31,6 +31,10 @@ library(shinydashboard)
 require(janitor)
 library(palmerpenguins)
 ```
+```{r}
+#install.packages("shiny")
+#install.packages("shinydashboard")
+```
 
 ## Running A Shiny App from Script
 Copy and pasting code into the console is okay for tiny example apps, but it's not feasible for large apps, especially because advanced shiny apps can be hundreds of line of code or more. The best way to work on apps is from a stand alone script. R Studio should automatically recognize the shiny app from the basic app building blocks/skeleton. All we have to do to run our app is click the "Run App" button at the top right of the editor window.  
@@ -60,6 +64,9 @@ server <- function(input, output, session) {
 }
 
 shinyApp(ui, server)
+```
+```{r}
+homerange
 ```
 
 ## Aesthetics
@@ -269,6 +276,64 @@ wolves <- read_csv("data/wolves_data/wolves_dataset.csv")
 
 ```{r}
 names(wolves)
+```
+
+```{r}
+wolves %>% 
+  pivot_wider(names_from= "pop",
+              values_from= "sex")
+```
+```{r}
+wolves %>% 
+  group_by(pop) %>% 
+  filter(sex != "NA") %>% 
+  count(sex)
+```
+
+
+```{r}
+ui <- dashboardPage(
+  dashboardHeader(title = "Sexual Composition By Wolf Pack Population"),
+  dashboardSidebar(disable=T),
+  dashboardBody(
+  selectInput("population", "Select Wolf Population", choices= c("AK.PEN", "BAN.JAS", "BC", "DENALI", "ELLES", "GTNP", "INT,AK", "MEXICAN", "MI", "MT", "N.NWT", "ONT", "SE.AK", "SNF", "SS.NWT", "YNP", "YUCH" ), selected="AK.PEN"),
+                plotOutput("plot", width="600px", height="500px")
+))
+
+server <- function(input, output, session) {
+  output$plot <- renderPlot({
+    wolves %>% 
+  group_by(pop) %>% 
+  filter(sex != "NA") %>% 
+  count(sex) %>% 
+  ggplot(aes(x="sex", fill=sex))+
+  geom_bar(position= "dodge", alpha= .8, color= "black")+
+      theme_light(base_size= 18)+
+      labs(x= "Sex",
+           y= "Count")
+  })
+  session$onSessionEnded(stopApp) 
+}
+
+shinyApp(ui, server)
+```
+```{r}
+ui <- fluidPage(titlePanel("Homerange Locomotion"),
+                radioButtons("x", "Select Fill Variable", choices=c("trophic.guild", "thermoregulation"), selected="trophic.guild"),
+                plotOutput("plot", width="600px", height="500px")
+)
+
+server <- function(input, output, session) {
+  output$plot <- renderPlot({
+    ggplot(homerange, aes_string(x="locomotion", fill=input$x)) +
+      geom_bar(position="dodge", alpha=0.8, color="black") +
+      theme_light(base_size=18) +
+      labs(x=NULL, y=NULL, fill="Fill Variable")
+  })
+   session$onSessionEnded(stopApp) 
+}
+
+shinyApp(ui, server)
 ```
 
 2. For the app, here is a faceted version of what we are looking for. We want the reactive part to be `pop` and you should use `shinydashboard`.
