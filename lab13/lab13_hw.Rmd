@@ -6,6 +6,7 @@ output:
   html_document:
     theme: spacelab
     toc: no
+    keep.md: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -30,7 +31,7 @@ library(ggmap)
 ```
 
 ```{r}
-library(albersusa)
+#library(albersusa)
 ```
 
 ## Load the Data
